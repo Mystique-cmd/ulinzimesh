@@ -1,0 +1,96 @@
+/* Reset and base styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, sans-serif;
+  background-color: #f9fafb;
+  color: #111;
+  line-height: 1.5;
+}
+
+header {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem 2rem;
+  border-bottom: 2px solid #374151;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.subtitle {
+  font-size: 0.9rem;
+  color: #d1d5db;
+  margin-top: 0.25rem;
+}
+
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+/* Table styles */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+th, td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+thead {
+  background-color: #f3f4f6;
+}
+
+tr:hover {
+  background-color: #fef3c7;
+}
+
+/* Severity coloring */
+.severity-low {
+  color: #065f46;
+  font-weight: 500;
+}
+
+.severity-medium {
+  color: #b45309;
+  font-weight: 600;
+}
+
+.severity-high {
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.severity-critical {
+  color: #7f1d1d;
+  font-weight: 700;
+  background-color: #fee2e2;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+  border-top: 1px solid #e5e7eb;
+}

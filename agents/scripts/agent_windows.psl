@@ -1,0 +1,50 @@
+
+$hostname = $env:COMPUTERNAME
+$platform = "windows"
+
+#----Dummy telementary (replace with live capture logic later)----
+$src_ip = "192.168.1.50"
+$src_port = "12345"
+$dst_ip = "8.8.8.8"
+$dst_port = "53"
+$protocol = "udp"
+$direction = "egress"
+$bytes_tx = 256
+$bytes_rx = 512
+
+#----Build JSON object ----
+$event = [pscustomobject]@{
+    hostname = $hostname
+    platform = $platform
+    src_ip = $src_ip
+    src_port = $src_port
+    dst_ip = $dst_ip
+    dst_port = $dst_port
+    protocol = $protocol
+    direction = $direction
+    bytes_tx = $bytes_tx
+    bytes_rx = $bytes_rx
+}
+
+$eventJson = $event | ConvertTo-Json -Compress
+
+$collectorUrl = $env:COLLECTOR_URL
+if (-not $collectorUrl) {$collectorUrl = "http://127.0.0.1:9090/ingest/flow"}
+
+try {
+    Invoke-RestMethod -Method Post -Uri $collectorUrl -ContentType "application/json" -Body $eventJson
+    Write-Host "$(Get-Date -Format o)[agent_windows] posted event successfully"
+}
+catch {
+    Write-Warning "$(Get-Date -Format 'o') [agent_windows] post failed: $_"
+
+    $scriptPath = Split-Path -Path $MyInvocation.MyCommand.Path
+    $spoolDir = Join-Path $scriptPath "../../spool/outbox"
+
+    if (-not (Test-Path $spoolDir)) {
+        New-Item -ItemType Directory -Force -Path $spoolDir | Out-Null
+    }
+
+    $fname = Join-Path $spoolDir ("{0:yyyyMMddTHHmmss}_$PID.json" -f (Get-Date))
+    $eventJson | Out-File -Encoding ascii -FilePath $fname
+}

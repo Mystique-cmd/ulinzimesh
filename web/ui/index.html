@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en-ke">
+<!--since i want to make UlinziMesh a global product i want to add a local aware template that detects the region and then adjust itself to that specific language this can
+only be done using JS-->
+<!--a no script should also be included for the cases where JS is disabled for a webpage-->
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description"
+    content="UlinziMesh is a modular cybersecurity framework for orchestrating low-level agents, adaptive dashboards, and real-time threat response workflows.">
+  <meta name="keywords"
+    content="UlinziMesh, cybersecurity framework, agent orchestration, OSINT, threat hunting, assembler agent, binary triggers, API hooks, dashboard integration, modular security, low-level programming, incident response, digital footprint analysis, ethical hacking, systems architecture, workflow automation, recon workflows, security mesh, cross-language integration, adaptive defense, telemetry pipelines, real-time monitoring, secure build pipelines, threat intelligence, security automation">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UlinziMesh Dashboard</title>
+  <link rel="stylesheet" href="styles.css" type="text/css">
+  <link rel="icon" href="admin.png" type="image/x-icon"> 
+  <link rel="alternate" href="#">
+  <link rel="author" href="#">
+  <link rel="help" href="#">
+  <link rel="license" href="#">
+  <link rel="dns-prefetch" href="//example.com">
+  <link rel="preconnect" href="#" crossorigin> 
+  <link rel="prefetch" href="#">
+  <link rel="preload" href="#" as="script"> 
+  <link rel="prerender" href="#">
+  <link rel="manifest" href="#">
+  <link rel="modulepreload" href="#"> 
+  <link rel="canonical" href="#">
+</head>
+
+<body>
+  <header>
+    <h1>UlinziMesh</h1>
+    <p class="subtitle">Threat Hunting & Deception Telemetry</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Recent Findings</h2>
+      <table id="findings">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Severity</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Recent Network Flows</h2>
+      <table id="flows">
+        <thead>
+          <tr>
+            <th>Host</th>
+            <th>Src IP</th>
+            <th>Dst IP</th>
+            <th>Dst Port</th>
+            <th>Protocol</th>
+            <th>Timestamp</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>Indicators</h2>
+      <table id="indicators">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Value</th>
+            <th>Confidence</th>
+            <th>Last Seen</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>
+    <p>UlinziMesh v0.1 — Built for adaptive threat response</p>
+  </footer>
+  <!--Check to see that the script uses defer or async for optimization-->
+  <script src="app.js"></script>
+</body>
+
+</html>

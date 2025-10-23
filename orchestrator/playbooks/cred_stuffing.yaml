@@ -1,0 +1,35 @@
+- name: Credential Stuffing Triage
+  hosts: all
+  vars:
+    threshold: 50
+    sensitive_ports: [22, 3389, 80, 443]
+  tasks:
+
+    - name: Query suspicious login flows
+      community.postgresql.postgresql_query:
+        login_user: ulinzi
+        login_password: ulinzi
+        login_host: localhost
+        login_db: ulinzi
+        query: |
+          SELECT dst_ip::text, COUNT(*) AS attempts
+          FROM network_flows
+          WHERE ts > NOW() - INTERVAL '1 hour'
+          AND dst_port = ANY(ARRAY[22, 3389, 80, 443])
+          GROUP BY dst_ip
+          HAVING COUNT(*) > 50;
+      register: suspicious_flows
+
+    - name: Promote finding if suspicious IPs exist
+      when: suspicious_flows is defined and suspicious_flows.query_result | length > 0
+      community.postgresql.postgresql_query:
+        db: ulinzi
+        query: |
+          {% for row in suspicious_flows.rows %}
+          INSERT INTO findings (title, description, severity)
+          VALUES (
+            'Credential Stuffing Detected',
+            'High volume login attempts to {{ row.dst_ip }}',
+            'high'
+          );
+          {% endfor %}

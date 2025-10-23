@@ -1,0 +1,34 @@
+#-----Config -----
+$CollectorUrl = $env:COLLECTOR_URL
+if (-not $CollectorUrl) {
+    $CollectorUrl = "https://127.0.0.1:9090/ingest/flow"
+}
+
+$Hostname = $env:HOSTNAME
+if (-not $Hostname) {
+    $Hostname = $env:COMPUTERNAME
+}
+
+$Platform = "windows"
+
+#-----Dummy Data -----
+$Event = @{
+    hostname      = $Hostname
+    platform      = $Platform
+    src_ip       = "192.168.1.50"
+    dest_ip      = "8.8.8.8"
+    src_port     = 12345
+    dest_port    = 53
+    protocol     = "UDP"
+    direction    = "egress"
+    bytes_tx   = 512
+    bytes_rx   = 1024
+} | ConvertTo-Json -Compress
+
+#-----Send Event -----
+try {
+    Invoke-RestMethod -Method Post -Uri $CollectorUrl -ContentType "application/json" -Body $Event
+    Write-Host "Event sent successfully to $CollectorUrl"
+} catch {
+    Write-Host "Failed to send event: $($_Exception.Message)"
+}
