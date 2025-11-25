@@ -1,0 +1,25 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, 127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /index.html HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /styles.css HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /app.js HTTP/1.1" 200 -
+127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /admin.png HTTP/1.1" 200 -
+tocol,
+        ^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3.13/http/server.py", line 1270, in test
+    with ServerClass(addr, HandlerClass) as httpd:
+         ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/socketserver.py", line 457, in __init__
+    self.server_bind()
+    ~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/http/server.py", line 1317, in server_bind
+    return super().server_bind()
+           ~~~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.13/http/server.py", line 136, in server_bind
+    socketserver.TCPServer.server_bind(self)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/socketserver.py", line 478, in server_bind
+    self.socket.bind(self.server_address)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+OSError: [Errno 98] Address already in use

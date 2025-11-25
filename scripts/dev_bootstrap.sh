@@ -21,13 +21,13 @@ bash "$REPO_ROOT/scripts/migrate_up.sh"
 
 # --- Build agents ---
 echo "$LOG_PREFIX building C agent..."
-bash "$REPO_ROOT/agents/c_agent/build.sh"
+(cd "$REPO_ROOT/agents/c_agent" && bash build.sh)
 
 echo "$LOG_PREFIX building C++ decoy..."
-bash "$REPO_ROOT/agents/cpp_decoy/build.sh"
+(cd "$REPO_ROOT/agents/cpp_decoy" && bash build.sh)
 
 echo "$LOG_PREFIX building Assembly agent..."
-bash "$REPO_ROOT/agents/asm/build.sh" || echo "$LOG_PREFIX assembly build skipped (platform mismatch)"
+(cd "$REPO_ROOT/agents/asm" && bash build.sh) || echo "$LOG_PREFIX assembly build skipped (platform mismatch)"
 
 # --- Start collector ---
 echo "$LOG_PREFIX starting Go collector..."
