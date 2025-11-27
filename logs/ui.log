@@ -1,9 +1,13 @@
 Traceback (most recent call last):
-  File "<frozen runpy>", line 198, 127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /index.html HTTP/1.1" 200 -
-127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /styles.css HTTP/1.1" 200 -
-127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /app.js HTTP/1.1" 200 -
-127.0.0.1 - - [25/Nov/2025 18:40:29] "GET /admin.png HTTP/1.1" 200 -
-tocol,
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/usr/lib/python3.13/http/server.py", line 1323, in <module>
+    test(
+    ~~~~^
+        HandlerClass=handler_class,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+        protocol=args.protocol,
         ^^^^^^^^^^^^^^^^^^^^^^^
     )
     ^

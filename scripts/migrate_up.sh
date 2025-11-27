@@ -1,24 +1,22 @@
 #! /usr/bin/env bash
 
 set -euo pipefail
-ENV_FILE="${ENV_FILE:-.env}"
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 #--- Load environment variables from .env file if it exists
-while IFS='=' read -r key value; do
-  if [[ "$key" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]]; then
-    export "$key=$value"
-  fi
-done < <(grep -v '^#' "$ENV_FILE" | grep '=')
+# This is now handled by dev_bootstrap.sh, so we remove the redundant block.
 
 
 #-----Required variables-----
 PGHOST="${PGHOST:-127.0.0.1}"
 PGPORT="${PGPORT:-5432}"
-PGUSER="${PGUSER:-ulinzi}"
-PGPASSWORD="${PGPASSWORD:-ulinzi}"
-PGDATABASE="${PGDATABASE:-ulinzi}"
+PGUSER="${PGUSER:-admin}"
+PGPASSWORD="${PGPASSWORD:-admin}"
+PGDATABASE="${PGDATABASE:-ulinzimesh}"
 
 #----Migration dir-----
-MIGRATION_DIR="${MIGRATION_DIR:-db/migrations}"
+MIGRATION_DIR="${MIGRATION_DIR:-$REPO_ROOT/db/migrations}"
 LOG_PREFIX="[migrate_up.sh]"
 
 #----Create the database if it doesn't exist-----
@@ -31,10 +29,12 @@ psql "host=$PGHOST port=$PGPORT user=$PGUSER password=$PGPASSWORD dbname=postgre
 
 #----Run migrations-----
 echo "$LOG_PREFIX Running migrations in directory '$MIGRATION_DIR'..."
+set -x # Enable command tracing
 for f in $(ls "$MIGRATION_DIR"/*.sql | sort); do
     echo "$LOG_PREFIX Applying migration: $f"
     psql "host=$PGHOST port=$PGPORT user=$PGUSER password=$PGPASSWORD dbname=$PGDATABASE sslmode=disable" \
-    -V ON_ERROR_STOP -f "$f"
+    -f "$f"
 done
+set +x # Disable command tracing
 
 echo "$LOG_PREFIX All migrations applied successfully."

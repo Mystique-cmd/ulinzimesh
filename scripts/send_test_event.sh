@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # ------ Configuration ------
-COLLECTOR_URL="${COLLECTOR_URL:-http://127.0.0.1:9090/ingest/flow}"
+COLLECTOR_URL="${COLLECTOR_URL:-http://127.0.0.1:9000/ingest/flow}"
 HOSTNAME="${HOSTNAME:-test-host}"
 PLATFORM="${PLATFORM:-linux}"
 
@@ -44,5 +44,5 @@ EVENT=$(jq -n \
 )
 
 #------Send event to collector------
-echo "$EVENT" | curl -sS -X POST -H "Content-Type: application/json" -d @- "$COLLECTOR_URL"
+echo "$EVENT" | curl -sS -X POST -H "Content-Type: application/json" -H "Authorization: Bearer $COLLECTOR_TOKEN" -d @- "$COLLECTOR_URL"
 echo -e "\nEvent sent to $COLLECTOR_URL"

@@ -9,7 +9,7 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "$LOG_PREFIX loading environment..."
 if [[ -f "$REPO_ROOT/$ENV_FILE" ]]; then
-  export $(grep -v '^#' "$REPO_ROOT/$ENV_FILE" | xargs -d '\n')
+  source "$REPO_ROOT/$ENV_FILE"
 else
   echo "$LOG_PREFIX no .env file found at $REPO_ROOT/$ENV_FILE"
   exit 1
