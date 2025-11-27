@@ -43,7 +43,7 @@ func (s *server) withAuth(next http.Handler) http.Handler {
     return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         // Example: check for token or session
         token := r.Header.Get("Authorization")
-        if token != "expected-token" {
+        if token != "Bearer " + s.token {
             http.Error(w, "Unauthorized", http.StatusUnauthorized)
             return
         }

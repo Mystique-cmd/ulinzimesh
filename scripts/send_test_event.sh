@@ -6,6 +6,7 @@ set -euo pipefail
 COLLECTOR_URL="${COLLECTOR_URL:-http://127.0.0.1:9000/ingest/flow}"
 HOSTNAME="${HOSTNAME:-test-host}"
 PLATFORM="${PLATFORM:-linux}"
+COLLECTOR_TOKEN="${COLLECTOR_TOKEN:-}"
 
 #------Dummy flow data------
 SRC_IP="10.0.0.5"
