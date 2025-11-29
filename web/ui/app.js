@@ -1,19 +1,33 @@
-const API_BASE = "http://127.0.0.1:8081";
+// Resolve API base dynamically: prefer same-origin /api, fallback to localhost:8081
+const API_CANDIDATES = [
+  `${window.location.origin}/api`,
+  'http://127.0.0.1:8081'
+];
 
 async function fetchJSON(endpoint) {
-  try {
-    const res = await fetch(`${API_BASE}/${endpoint}`);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return await res.json();
-  } catch (err) {
-    console.error(`[app.js] fetch failed for ${endpoint}:`, err);
-    return [];
+  for (const base of API_CANDIDATES) {
+    try {
+      const res = await fetch(`${base}/${endpoint}`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return await res.json();
+    } catch (err) {
+      console.warn(`[app.js] fetch failed for ${base}/${endpoint}:`, err);
+      // try next candidate
+    }
   }
+  console.error(`[app.js] all API bases failed for ${endpoint}`);
+  return [];
 }
 
 function renderFindings(data) {
   const tbody = document.querySelector("#findings tbody");
   tbody.innerHTML = "";
+  if (!Array.isArray(data) || data.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td colspan="3" style="text-align:center;color:#777;">No findings yet</td>';
+    tbody.appendChild(tr);
+    return;
+  }
   data.forEach(f => {
     const tr = document.createElement("tr");
     const sevClass = `severity-${f.severity}`;
@@ -29,8 +43,14 @@ function renderFindings(data) {
 function renderFlows(data) {
   const tbody = document.querySelector("#flows tbody");
   tbody.innerHTML = "";
+  if (!Array.isArray(data) || data.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td colspan="6" style="text-align:center;color:#777;">No flows yet</td>';
+    tbody.appendChild(tr);
+    return;
+  }
   data.forEach(f => {
-    tr = document.createElement("tr");
+    const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${f.hostname}</td>
       <td>${f.src_ip}</td>
@@ -46,8 +66,14 @@ function renderFlows(data) {
 function renderIndicators(data) {
   const tbody = document.querySelector("#indicators tbody");
   tbody.innerHTML = "";
+  if (!Array.isArray(data) || data.length === 0) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td colspan="4" style="text-align:center;color:#777;">No indicators yet</td>';
+    tbody.appendChild(tr);
+    return;
+  }
   data.forEach(i => {
-    tr = document.createElement("tr");
+    const tr = document.createElement("tr");
     tr.innerHTML = `
       <td>${i.type}</td>
       <td>${i.value}</td>

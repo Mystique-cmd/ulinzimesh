@@ -13,6 +13,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
+	"runtime"
 	"github.com/joho/godotenv"
 
 	_"github.com/lib/pq"
@@ -57,12 +58,23 @@ func validateFlowEvent(event *FlowEvent) error {
 }
 
 func main(){
+	fmt.Println("Running from:", os.Args[0])
+	_, filename, _, ok := runtime.Caller(0)
+	if ok {
+		fmt.Println("Main.go path:", filename)
+	}
 	err := godotenv.Load()
     if err != nil {
         log.Fatal("Error loading .env file")
     }
 
-    connStr := os.Getenv("DATABASE_URL") // or build from individual vars
+    connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+        os.Getenv("PGHOST"),
+        os.Getenv("PGPORT"),
+        os.Getenv("PGUSER"),
+        os.Getenv("PGPASSWORD"),
+        os.Getenv("PGDATABASE"),
+    )
     fmt.Println("Connection string:", connStr)
 
     db, err := sql.Open("postgres", connStr)
@@ -126,6 +138,7 @@ must(err)
 }
 
 func (s *server) ingestFlow(w http.ResponseWriter, r *http.Request){
+	fmt.Println("ingestFlow: received request")
 	if r.Method != http.MethodPost{
 		http.Error(w, "method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -134,31 +147,52 @@ func (s *server) ingestFlow(w http.ResponseWriter, r *http.Request){
 
 	var ev FlowEvent
 	if err := json.NewDecoder(r.Body).Decode(&ev); err != nil{
+		fmt.Printf("ingestFlow: json decoding failed: %v\n", err)
 		http.Error(w, "Invalid Json", http.StatusBadRequest)
 		return
 	}
+	fmt.Println("ingestFlow: json decoded")
 
-	if err := validateFlowEvent(&ev); err != nil{
+	if err := validateFlow(ev); err != nil{
+		fmt.Printf("ingestFlow: validation failed: %v\n", err)
 		http.Error(w, fmt.Sprintf("invalid event: %v", err), http.StatusBadRequest)
 		return
 	}
+	fmt.Println("ingestFlow: validation passed")
 
 	tx, err := s.db.Begin()
 	if err !=  nil {
+		fmt.Printf("ingestFlow: db.Begin failed: %v\n", err)
 		http.Error(w, "db begin failed", http.StatusInternalServerError)
 		return
 	}
+	fmt.Println("ingestFlow: transaction began")
 	defer tx.Rollback()
 
 	var hostID string
 	if err := s.stmtUpsertH.QueryRow(ev.Hostname, ev.Platform).Scan(&hostID); err != nil {
+		fmt.Printf("ingestFlow: host upsert failed: %v\n", err)
    		http.Error(w, "host upsert failed", http.StatusInternalServerError)
     	return
 	}
+	fmt.Printf("ingestFlow: host upserted, hostID: %s\n", hostID)
 
 	_, err = s.stmtInsertNF.Exec(
-    hostID, ev.SrcIP, ev.SrcPort, ev.DstIP, ev.DstPort, ev.Protocol, ev.Direction, ev.BytesTx, ev.BytesRx,
+    hostID, ev.SrcIP, ev.SrcPort, ev.DstIP, ev.DstPort, ev.Direction, ev.BytesTx, ev.BytesRx,
 	)
+	if err != nil {
+		fmt.Printf("ingestFlow: flow insert failed: %v\n", err)
+		http.Error(w, "flow insert failed", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("ingestFlow: flow inserted")
+
+	if err := tx.Commit(); err != nil {
+		fmt.Printf("ingestFlow: tx.Commit failed: %v\n", err)
+		http.Error(w, "db commit failed", http.StatusInternalServerError)
+		return
+	}
+	fmt.Println("ingestFlow: transaction committed")
 
 	 w.Header().Set("Content-Type","application/json")
 	 w.WriteHeader(http.StatusAccepted)
@@ -205,7 +239,8 @@ func validateFlow( ev FlowEvent) error {
 
 func must(err error){
 	if err != nil {
-		log.Fatal(err)
+		fmt.Println(err)
+		os.Exit(1)
 	}
 }
 

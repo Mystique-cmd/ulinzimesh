@@ -1,4 +1,14 @@
 <?php
+// CORS & JSON headers
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+header('Content-Type: application/json');
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  http_response_code(204);
+  exit;
+}
+
 // Load environment variables if .env file exists
 if (file_exists(__DIR__ . '/../../.env')) {
     $lines = file(__DIR__ . '/../../.env', FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
@@ -32,10 +42,6 @@ try {
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
   ]);
 } catch (PDOException $e) {
-  http_response_code(500);
-  echo json_encode(['error' => 'Database connection failed']);
-  exit;
+  // Degrade gracefully when DB is unavailable; allow routes to return mock data
+  $pdo = null;
 }
-
-// Force JSON output
-header('Content-Type: application/json');

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 # ------ Configuration ------
-COLLECTOR_URL="${COLLECTOR_URL:-http://127.0.0.1:9000/ingest/flow}"
+COLLECTOR_URL="${COLLECTOR_URL:-http://127.0.0.1:9090/ingest/flow}"
 HOSTNAME="${HOSTNAME:-test-host}"
 PLATFORM="${PLATFORM:-linux}"
 COLLECTOR_TOKEN="${COLLECTOR_TOKEN:-}"
@@ -37,7 +37,7 @@ EVENT=$(jq -n \
       dst_ip: $di,
       src_port: ($sp | tonumber),
       dst_port: ($dp | tonumber),
-      protocol: ($pr | tonumber),
+      protocol: $pr,
       direction: $dr,
       bytes_tx: ($btx | tonumber),
       bytes_rx: ($brx | tonumber),

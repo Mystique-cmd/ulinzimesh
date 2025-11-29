@@ -22,6 +22,6 @@ LOG_PREFIX="[migrate_down.sh]"
 #----Drop the database-----
 echo "$LOG_PREFIX Dropping database '$PGDATABASE' if it exists..."
 psql "host=$PGHOST port=$PGPORT user=$PGUSER password=$PGPASSWORD dbname=postgres sslmode=disable" \
-    -c "DROP DATABASE IF EXISTS \"$PGDATABASE"\ WITH (FORCE);"
+    -c "DROP DATABASE IF EXISTS \"$PGDATABASE\" WITH (FORCE);"
 
 echo "$LOG_PREFIX Database '$PGDATABASE' dropped successfully."

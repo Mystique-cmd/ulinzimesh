@@ -1,0 +1,52 @@
+Running from: ./collector
+Main.go path: /home/mystique/Desktop/UlinziMesh/collector/main.go
+Connection string: host=localhost port=5432 user=admin password=admin dbname=ulinzimesh sslmode=disable
+2025/11/29 16:33:09 collector listening on 127.0.0.1:9090
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:33:43 POST /ingest/flow 202 21.994946ms
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:34:45 POST /ingest/flow 202 8.933785ms
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:34:58 POST /ingest/flow 202 8.61997ms
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:35:09 POST /ingest/flow 202 8.660485ms
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:35:17 POST /ingest/flow 202 8.593519ms
+ingestFlow: received request
+ingestFlow: json decoded
+ingestFlow: validation passed
+ingestFlow: transaction began
+ingestFlow: host upserted, hostID: 5847963b-2585-4136-bd73-d5488b360980
+ingestFlow: flow inserted
+ingestFlow: transaction committed
+2025/11/29 16:35:29 POST /ingest/flow 202 8.861111ms

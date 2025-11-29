@@ -47,6 +47,6 @@ fi
 
 echo "$LOG_PREFIX bootstrap complete."
 echo "$LOG_PREFIX services running:"
-echo "  Collector:     http://127.0.0.1:9000/healthz"
+echo "  Collector:     http://127.0.0.1:9090/healthz"
 echo "  PHP API:       http://127.0.0.1:8081/findings"
 echo "  UI (optional): http://127.0.0.1:8082/index.html"
