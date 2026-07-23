@@ -1,0 +1,94 @@
+# ──────────────────────────────────────────────
+# Environment & Secrets
+# ──────────────────────────────────────────────
+.env
+.env.*
+
+# ──────────────────────────────────────────────
+# Runtime Logs & Telemetry Spool
+# ──────────────────────────────────────────────
+logs/
+spool/
+nohup.out
+
+# ──────────────────────────────────────────────
+# Compiled Binaries & Objects
+# ──────────────────────────────────────────────
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Agent binaries
+agents/c_agent/agent
+agents/c_agent/agent.exe
+agents/cpp_decoy/decoy
+agents/cpp_decoy/decoy.exe
+agents/asm/agent_linux
+agents/asm/agent_linux.o
+
+# Collector binary
+collector/collector
+collector/collector.exe
+
+# ──────────────────────────────────────────────
+# Go
+# ──────────────────────────────────────────────
+vendor/
+*.test
+*.out
+go.work
+
+# ──────────────────────────────────────────────
+# Python
+# ──────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# ──────────────────────────────────────────────
+# IDE & Editor
+# ──────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+*.log
+
+# ──────────────────────────────────────────────
+# OS Files
+# ──────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ──────────────────────────────────────────────
+# Project-specific: Agent telemetry capture
+# ──────────────────────────────────────────────
+# These are produced by agent runs and may contain
+# sensitive network information
+spool/
+!spool/.gitkeep
+
+# ──────────────────────────────────────────────
+# Development scratch files
+# ──────────────────────────────────────────────
+*.bak
+*.tmp
+todo.*
+
