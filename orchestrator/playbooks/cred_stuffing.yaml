@@ -7,10 +7,10 @@
 
     - name: Query suspicious login flows
       community.postgresql.postgresql_query:
-        login_user: ulinzi
-        login_password: ulinzi
-        login_host: localhost
-        login_db: ulinzi
+        login_user: admin
+        login_password: admin
+        login_host: "{{ lookup('env', 'PGHOST') | default('localhost', true) }}"
+        login_db: ulinzimesh
         query: |
           SELECT dst_ip::text, COUNT(*) AS attempts
           FROM network_flows
@@ -23,7 +23,10 @@
     - name: Promote finding if suspicious IPs exist
       when: suspicious_flows is defined and suspicious_flows.query_result | length > 0
       community.postgresql.postgresql_query:
-        db: ulinzi
+        login_user: admin
+        login_password: admin
+        login_host: "{{ lookup('env', 'PGHOST') | default('localhost', true) }}"
+        login_db: ulinzimesh
         query: |
           {% for row in suspicious_flows.rows %}
           INSERT INTO findings (title, description, severity)

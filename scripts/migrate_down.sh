@@ -13,9 +13,9 @@ fi
 #-----Required variables-----
 PGHOST="${PGHOST:-127.0.0.1}"
 PGPORT="${PGPORT:-5432}"
-PGUSER="${PGUSER:-ulinzi}"
-PGPASSWORD="${PGPASSWORD:-ulinzi}"
-PGDATABASE="${PGDATABASE:-ulinzi}"
+PGUSER="${PGUSER:-admin}"
+PGPASSWORD="${PGPASSWORD:-admin}"
+PGDATABASE="${PGDATABASE:-ulinzimesh}"
 
 LOG_PREFIX="[migrate_down.sh]"
 

@@ -95,7 +95,7 @@ func main(){
 	mux.HandleFunc("/readyz", s.readyz)
 	mux.Handle("/ingest/flow", s.withAuth(http.HandlerFunc(s.ingestFlow)))
 
-	addr := env("COLLECTOR_BIND", "127.0.0.1:9090")
+	addr := env("COLLECTOR_BIND", "0.0.0.0:9090")
 	srv  := &http.Server{
 		Addr:	addr,
 		Handler:	withLogging(mux),
@@ -229,7 +229,7 @@ func validateFlow( ev FlowEvent) error {
 		return errors.New("invalid port")
 	}
 	switch strings.ToLower(ev.Direction){
-	case "ingeress","egress":
+	case "ingress","egress":
 	default:
 		return errors.New("invalid direction")
 	}
@@ -248,9 +248,9 @@ func mustOpenDB() *sql.DB {
 	dsn := fmt.Sprintf ("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		env("PGHOST", "127.0.0.1"),
 		env("PGPORT", "5432"),
-		env("PGUSER", "ulinzi"),
-		env("PGPASSWORD", "ulinzi"),
-		env("PGDATABASE", "ulinzi"),
+		env("PGUSER", "admin"),
+		env("PGPASSWORD", "admin"),
+		env("PGDATABASE", "ulinzimesh"),
 	)
 	db, err := sql.Open("postgres", dsn)
 	must(err)

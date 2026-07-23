@@ -1,7 +1,7 @@
 #-----Config -----
 $CollectorUrl = $env:COLLECTOR_URL
 if (-not $CollectorUrl) {
-    $CollectorUrl = "https://127.0.0.1:9090/ingest/flow"
+$CollectorUrl = "http://127.0.0.1:9090/ingest/flow"
 }
 
 $Hostname = $env:HOSTNAME
@@ -16,10 +16,10 @@ $Event = @{
     hostname      = $Hostname
     platform      = $Platform
     src_ip       = "192.168.1.50"
-    dest_ip      = "8.8.8.8"
+    dst_ip      = "8.8.8.8"
     src_port     = 12345
-    dest_port    = 53
-    protocol     = "UDP"
+    dst_port    = 53
+    protocol     = "udp"
     direction    = "egress"
     bytes_tx   = 512
     bytes_rx   = 1024

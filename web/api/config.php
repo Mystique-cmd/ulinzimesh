@@ -29,9 +29,9 @@ if (file_exists(__DIR__ . '/../../.env')) {
 // Load environment variables (if using dotenv loader, otherwise set via server)
 $host     = getenv('PGHOST') ?: '127.0.0.1';
 $port     = getenv('PGPORT') ?: '5432';
-$dbname   = getenv('PGDATABASE') ?: 'ulinzi';
-$user     = getenv('PGUSER') ?: 'ulinzi';
-$password = getenv('PGPASSWORD') ?: 'ulinzi';
+$dbname   = getenv('PGDATABASE') ?: 'ulinzimesh';
+$user     = getenv('PGUSER') ?: 'admin';
+$password = getenv('PGPASSWORD') ?: 'admin';
 
 // Build DSN
 $dsn = "pgsql:host=$host;port=$port;dbname=$dbname";

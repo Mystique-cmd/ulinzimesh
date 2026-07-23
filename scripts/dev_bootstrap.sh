@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Bootstraps the full UlinziMesh dev environment
+# Supports remote agent connections - collector binds to 0.0.0.0 by default
 
 set -euo pipefail
 
@@ -29,14 +30,22 @@ echo "$LOG_PREFIX building C++ decoy..."
 echo "$LOG_PREFIX building Assembly agent..."
 (cd "$REPO_ROOT/agents/asm" && bash build.sh) || echo "$LOG_PREFIX assembly build skipped (platform mismatch)"
 
-# --- Start collector ---
+# --- Start collector (binds to all interfaces for remote agents) ---
 echo "$LOG_PREFIX starting Go collector..."
-(cd "$REPO_ROOT/collector" && nohup go run main.go > "$REPO_ROOT/logs/collector.log" 2>&1 &)
+export COLLECTOR_BIND="${COLLECTOR_BIND:-0.0.0.0:9090}"
+(cd "$REPO_ROOT/collector" && nohup env COLLECTOR_BIND="$COLLECTOR_BIND" \
+  COLLECTOR_TOKEN="${COLLECTOR_TOKEN:-}" \
+  PGHOST="${PGHOST:-127.0.0.1}" \
+  PGPORT="${PGPORT:-5432}" \
+  PGUSER="${PGUSER:-admin}" \
+  PGPASSWORD="${PGPASSWORD:-admin}" \
+  PGDATABASE="${PGDATABASE:-ulinzimesh}" \
+  go run main.go > "$REPO_ROOT/logs/collector.log" 2>&1 &)
 sleep 2
 
 # --- Start PHP API ---
 echo "$LOG_PREFIX starting PHP API..."
-(cd "$REPO_ROOT/web/api" && nohup php -S 127.0.0.1:8081 > "$REPO_ROOT/logs/api.log" 2>&1 &)
+(cd "$REPO_ROOT/web/api" && nohup php -S 0.0.0.0:8081 > "$REPO_ROOT/logs/api.log" 2>&1 &)
 sleep 2
 
 # --- Optional UI server ---
@@ -47,6 +56,10 @@ fi
 
 echo "$LOG_PREFIX bootstrap complete."
 echo "$LOG_PREFIX services running:"
-echo "  Collector:     http://127.0.0.1:9090/healthz"
-echo "  PHP API:       http://127.0.0.1:8081/findings"
+echo "  Collector:     http://${COLLECTOR_BIND}/healthz"
+echo "  PHP API:       http://0.0.0.0:8081/findings"
 echo "  UI (optional): http://127.0.0.1:8082/index.html"
+echo ""
+echo "$LOG_PREFIX agents can now connect to the collector at: http://<this-host>:9090"
+echo "$LOG_PREFIX to configure remote agents, set COLLECTOR_URL=http://<this-host>:9090/ingest/flow"
+
