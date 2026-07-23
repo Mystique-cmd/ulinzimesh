@@ -67,11 +67,11 @@ Runs YAML playbooks against the telemetry database to detect threats like creden
 
 # 2. Configure environment
 #    Copy or edit .env at the repo root:
-#      PGHOST=localhost
+#      PGHOST=lpghost
 #      PGPORT=5432
-#      PGDATABASE=ulinzimesh
-#      PGUSER=admin
-#      PGPASSWORD=admin
+#      PGDATABASE=pgdatabase
+#      PGUSER=pguser
+#      PGPASSWORD=pgpassword
 #      COLLECTOR_TOKEN="your-secret-token"
 
 # 3. Bootstrap everything
